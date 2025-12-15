@@ -26,7 +26,7 @@ COPY --from=publish /app/publish .
 COPY ["data/", "Data/"]
 
 # Create non-root user and install curl for health checks
-RUN adduser --disabled-password --gecos '' appuser && chown -R appuser:appuser /app && \
+RUN useradd appuser && chown -R appuser:appuser /app && \
     apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 USER appuser
 
