@@ -102,7 +102,7 @@ jobs:
         fi
 
     - name: Run FOSSA license scan
-      uses: fossa-contrib/fossa-action@v1
+      uses: fossa-contrib/fossa-action@v3
       with:
         api-key: ${{ secrets.FOSSA_API_KEY }}
 
