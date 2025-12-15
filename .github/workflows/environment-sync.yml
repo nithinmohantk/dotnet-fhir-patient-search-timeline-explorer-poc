@@ -118,7 +118,7 @@ jobs:
         kubectl diff -f k8s/ >> ../../drift-report.md 2>&1 || true
 
     - name: Upload drift report
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: configuration-drift-report
         path: drift-report.md
@@ -197,7 +197,7 @@ jobs:
         echo "- Status: $(echo "Checking secrets..." && echo "OK")" >> secrets-report.md
 
     - name: Upload secrets report
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: secrets-rotation-report
         path: secrets-report.md
@@ -231,7 +231,7 @@ jobs:
         az policy state list --resource /subscriptions/${{ secrets.AZURE_SUBSCRIPTION_ID }} --query "[?complianceState=='NonCompliant']" >> compliance-report.md
 
     - name: Upload compliance report
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: compliance-report
         path: compliance-report.md

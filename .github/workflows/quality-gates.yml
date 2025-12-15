@@ -38,7 +38,7 @@ jobs:
         node-version: '20.x'
 
     - name: Cache NuGet packages
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: ~/.nuget/packages
         key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
@@ -46,7 +46,7 @@ jobs:
           ${{ runner.os }}-nuget-
 
     - name: Cache npm dependencies
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: ~/.npm
         key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}

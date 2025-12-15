@@ -165,7 +165,7 @@ jobs:
         echo "## Integration Tests: $([ -f recovery-test-results.trx ] && echo "COMPLETED" || echo "NOT RUN")" >> recovery-report.md
 
     - name: Upload recovery report
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: disaster-recovery-report
         path: recovery-report.md
