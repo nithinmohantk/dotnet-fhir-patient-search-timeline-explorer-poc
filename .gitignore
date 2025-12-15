@@ -97,5 +97,3 @@ terraform.tfvars
 *.temp
 
 src/DooLittle.Health.PatientTimeline.Api/Data/patienttimeline.db*
-data/csv/
-data/fhir/
