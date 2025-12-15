@@ -24,7 +24,7 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
 
     - name: Setup PostgreSQL client
       run: |
@@ -65,7 +65,7 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
 
     - name: Create configuration backup
       run: |
@@ -99,7 +99,7 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
 
     - name: Setup test environment
       run: |
@@ -165,7 +165,7 @@ jobs:
         echo "## Integration Tests: $([ -f recovery-test-results.trx ] && echo "COMPLETED" || echo "NOT RUN")" >> recovery-report.md
 
     - name: Upload recovery report
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: disaster-recovery-report
         path: recovery-report.md
@@ -183,7 +183,7 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
 
     - name: Audit backup compliance
       uses: azure/CLI@v1

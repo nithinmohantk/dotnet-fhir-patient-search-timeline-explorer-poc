@@ -17,7 +17,7 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
         fetch-depth: 0
 
@@ -71,7 +71,7 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
@@ -102,12 +102,12 @@ jobs:
         fi
 
     - name: Run FOSSA license scan
-      uses: fossa-contrib/fossa-action@v1
+      uses: fossa-contrib/fossa-action@v3
       with:
         api-key: ${{ secrets.FOSSA_API_KEY }}
 
     - name: Upload license report
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: license-report
         path: licenses.json
@@ -118,7 +118,7 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
       with:
         fetch-depth: 0
 
@@ -142,7 +142,7 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
 
     - name: Build Docker image
       run: docker build -t patient-timeline:test .

@@ -29,7 +29,7 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
 
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
@@ -37,12 +37,12 @@ jobs:
         dotnet-version: '9.0.x'
 
     - name: Setup Node.js
-      uses: actions/setup-node@v4
+      uses: actions/setup-node@v6
       with:
         node-version: '20.x'
 
     - name: Cache NuGet packages
-      uses: actions/cache@v4
+      uses: actions/cache@v5
       with:
         path: ~/.nuget/packages
         key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
@@ -81,7 +81,7 @@ jobs:
         npx webpack-bundle-analyzer dist/static/js/*.js --mode static --report dist/bundle-report.html
 
     - name: Upload performance results
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: performance-results
         path: |
@@ -115,7 +115,7 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
 
     - name: Setup k6
       run: |
@@ -127,7 +127,7 @@ jobs:
         k6 run --out json=load-test-results.json tests/load/load-test.js
 
     - name: Upload load test results
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: load-test-results
         path: load-test-results.json

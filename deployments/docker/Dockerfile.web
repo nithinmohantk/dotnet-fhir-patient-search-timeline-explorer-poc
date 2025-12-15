@@ -1,7 +1,7 @@
 # DooLittle Health Patient Timeline Web Dockerfile
 # Author: Nithin Mohan T K (Example project for experimentation)
 # Build stage
-FROM node:20-alpine AS build
+FROM node:25-alpine AS build
 WORKDIR /app
 
 # Copy package files
