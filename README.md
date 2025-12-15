@@ -146,6 +146,9 @@ This application can import patient data from Synthea-generated CSV files.
 
 The import maps Synthea data to the application's Patient and TimelineEvent models, creating a chronological timeline of medical events for each patient.
 
+### Application Architecture
+![System Overview](results/arch.png)
+
 ## Screenshots
 
 ### Patient Selection Interface
@@ -156,9 +159,14 @@ The import maps Synthea data to the application's Patient and TimelineEvent mode
 ![Timeline Display2](results/result_003.png)
 ![Timeline Display3](results/result_004.png)
 ![Timeline Display4](results/result_005.png)
+![Timeline Display6](results/result_006.png)
+![Timeline Display7](results/result_007.png)
+![Timeline Display8](results/result_008.png)
+![Timeline Display9](results/result_009.png)
+![Timeline Display10](results/result_010.png)
+![Timeline Display11](results/result_011.png)
 
-### Application Architecture
-![System Overview](results/result_005.png)
+
 
 ## Contributing
 
