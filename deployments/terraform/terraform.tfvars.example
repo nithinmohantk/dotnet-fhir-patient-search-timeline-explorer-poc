@@ -1,0 +1,14 @@
+# Azure Configuration
+environment    = "dev"
+location       = "East US"
+unique_suffix  = "001"
+
+# AKS Configuration
+node_count     = 2
+min_node_count = 1
+max_node_count = 5
+vm_size        = "Standard_B2s"
+
+# Database Configuration
+db_admin_username = "psqladmin"
+db_admin_password = "CHANGE_THIS_STRONG_PASSWORD"

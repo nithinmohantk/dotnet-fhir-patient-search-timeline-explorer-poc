@@ -1,0 +1,106 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+
+    - name: Build .NET API
+      run: dotnet build DooLittle.Health.PatientTimeline.sln --configuration Release
+
+    - name: Build React Frontend
+      working-directory: src/DooLittle.Health.PatientTimeline.Web
+      run: |
+        npm ci
+        npm run build
+
+    - name: Create Release Archive
+      run: |
+        mkdir -p release-artifacts
+        cp -r src/DooLittle.Health.PatientTimeline.Api/bin/Release/net9.0/publish/* release-artifacts/ 2>/dev/null || true
+        cp -r src/DooLittle.Health.PatientTimeline.Web/dist/* release-artifacts/web/ 2>/dev/null || true
+        cp -r deployments release-artifacts/
+        cp README.md LICENSE release-artifacts/
+        cd release-artifacts && tar -czf ../patient-timeline-${{ github.ref_name }}.tar.gz .
+
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v2
+      with:
+        files: patient-timeline-${{ github.ref_name }}.tar.gz
+        generate_release_notes: true
+        draft: false
+        prerelease: ${{ contains(github.ref, 'beta') || contains(github.ref, 'alpha') || contains(github.ref, 'rc') }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  publish-docker:
+    name: Publish Docker Images
+    runs-on: ubuntu-latest
+    needs: release
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Extract metadata
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: ghcr.io/${{ github.repository }}
+        tags: |
+          type=ref,event=tag
+          type=raw,value=latest,enable={{is_default_branch}}
+
+    - name: Build and push API image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        file: ./deployments/docker/Dockerfile.api
+        push: true
+        tags: ghcr.io/${{ github.repository }}/api:${{ github.ref_name }}
+        labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+
+    - name: Build and push Web image
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        file: ./deployments/docker/Dockerfile.web
+        push: true
+        tags: ghcr.io/${{ github.repository }}/web:${{ github.ref_name }}
+        labels: ${{ steps.meta.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max

@@ -133,7 +133,7 @@ This application can import patient data from Synthea-generated CSV files.
 
 1. Download the CSV files from your Synthea output (e.g., from the GitHub repo mentioned).
 
-2. Place the following CSV files in `src/DooLittle.Health.PatientTimeline.Api/Data/csv/`:
+2. Place the following CSV files in `data/csv/`:
    - `patients.csv`
    - `encounters.csv`
    - `conditions.csv`

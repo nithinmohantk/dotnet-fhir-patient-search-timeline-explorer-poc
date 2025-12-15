@@ -1,0 +1,31 @@
+# Code Owners
+# This file defines who owns different parts of the codebase
+# When a pull request is opened that modifies files in these directories,
+# the specified users will be automatically requested for review
+
+# Global owners (all files)
+* @nithinmohantk
+
+# Backend/API ownership
+src/DooLittle.Health.PatientTimeline.Api/ @nithinmohantk
+deployments/docker/Dockerfile.api @nithinmohantk
+deployments/k8s/api-*.yaml @nithinmohantk
+
+# Frontend ownership
+src/DooLittle.Health.PatientTimeline.Web/ @nithinmohantk
+deployments/docker/Dockerfile.web @nithinmohantk
+deployments/k8s/web-*.yaml @nithinmohantk
+
+# Infrastructure ownership
+deployments/terraform/ @nithinmohantk
+deployments/k8s/ @nithinmohantk
+docker-compose.yml @nithinmohantk
+
+# CI/CD ownership
+.github/workflows/ @nithinmohantk
+.github/dependabot.yml @nithinmohantk
+build.sh @nithinmohantk
+
+# Documentation ownership
+README.md @nithinmohantk
+.github/ @nithinmohantk

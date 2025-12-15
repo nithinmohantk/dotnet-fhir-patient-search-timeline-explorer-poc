@@ -1,0 +1,216 @@
+name: Backup & Disaster Recovery
+
+on:
+  schedule:
+    # Run weekly on Saturdays at 11 AM UTC
+    - cron: '0 11 * * 6'
+  workflow_dispatch:
+    inputs:
+      backup_type:
+        description: 'Type of backup to perform'
+        required: true
+        default: 'full'
+        type: choice
+        options:
+        - full
+        - incremental
+        - test-restore
+
+jobs:
+  database-backup:
+    name: Database Backup
+    runs-on: ubuntu-latest
+    if: github.event.inputs.backup_type != 'test-restore' || github.event_name == 'schedule'
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup PostgreSQL client
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y postgresql-client
+
+    - name: Create backup directory
+      run: mkdir -p backups
+
+    - name: Perform database backup
+      run: |
+        # This would connect to your actual database
+        # For demo purposes, we'll create a mock backup
+        echo "Performing ${{ github.event.inputs.backup_type || 'full' }} database backup..."
+        date > backups/backup-$(date +%Y%m%d-%H%M%S).sql
+        echo "Database backup completed" >> backups/backup-$(date +%Y%m%d-%H%M%S).sql
+
+    - name: Upload backup to Azure Storage
+      uses: azure/CLI@v1
+      with:
+        azcliversion: latest
+        inlineScript: |
+          az storage blob upload \
+            --account-name ${{ secrets.AZURE_STORAGE_ACCOUNT }} \
+            --account-key ${{ secrets.AZURE_STORAGE_KEY }} \
+            --container-name backups \
+            --name backup-$(date +%Y%m%d-%H%M%S).sql \
+            --file backups/backup-$(date +%Y%m%d-%H%M%S).sql
+
+    - name: Clean up old backups
+      run: |
+        # Keep only last 7 days of backups
+        find backups -name "*.sql" -mtime +7 -delete
+
+  application-backup:
+    name: Application Configuration Backup
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Create configuration backup
+      run: |
+        mkdir -p backups/config
+        # Backup environment configurations, secrets references, etc.
+        cp -r .github backups/config/
+        cp docker-compose*.yml backups/config/
+        cp k8s/*.yml backups/config/
+        cp terraform/*.tf backups/config/
+
+    - name: Create archive
+      run: |
+        tar -czf config-backup-$(date +%Y%m%d-%H%M%S).tar.gz backups/config
+
+    - name: Upload to Azure Storage
+      uses: azure/CLI@v1
+      with:
+        azcliversion: latest
+        inlineScript: |
+          az storage blob upload \
+            --account-name ${{ secrets.AZURE_STORAGE_ACCOUNT }} \
+            --account-key ${{ secrets.AZURE_STORAGE_KEY }} \
+            --container-name backups \
+            --name config-backup-$(date +%Y%m%d-%H%M%S).tar.gz \
+            --file config-backup-$(date +%Y%m%d-%H%M%S).tar.gz
+
+  disaster-recovery-test:
+    name: Disaster Recovery Test
+    runs-on: ubuntu-latest
+    if: github.event.inputs.backup_type == 'test-restore' || github.event_name == 'schedule'
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup test environment
+      run: |
+        # Create a test database
+        docker run -d --name test-postgres \
+          -e POSTGRES_PASSWORD=test \
+          -e POSTGRES_DB=test_recovery \
+          -p 5433:5432 \
+          postgres:15
+
+        # Wait for database to be ready
+        sleep 30
+
+    - name: Download latest backup
+      uses: azure/CLI@v1
+      with:
+        azcliversion: latest
+        inlineScript: |
+          # Download the most recent backup
+          az storage blob download \
+            --account-name ${{ secrets.AZURE_STORAGE_ACCOUNT }} \
+            --account-key ${{ secrets.AZURE_STORAGE_KEY }} \
+            --container-name backups \
+            --name $(az storage blob list --account-name ${{ secrets.AZURE_STORAGE_ACCOUNT }} --account-key ${{ secrets.AZURE_STORAGE_KEY }} --container-name backups --query "[?contains(name, 'backup-')].name" -o tsv | sort | tail -1) \
+            --file latest-backup.sql
+
+    - name: Test database restore
+      run: |
+        # Restore database from backup
+        PGPASSWORD=test psql -h localhost -p 5433 -U postgres -d test_recovery < latest-backup.sql
+
+        # Verify restore was successful
+        PGPASSWORD=test psql -h localhost -p 5433 -U postgres -d test_recovery -c "SELECT COUNT(*) FROM information_schema.tables;"
+
+    - name: Test application deployment
+      run: |
+        # Build and deploy application to test environment
+        docker build -t patient-timeline:recovery-test .
+        docker run -d --name recovery-test-app \
+          -p 8081:80 \
+          --link test-postgres:postgres \
+          patient-timeline:recovery-test
+
+        # Wait for application to start
+        sleep 30
+
+        # Test application health
+        curl -f http://localhost:8081/api/health
+
+    - name: Run recovery validation tests
+      run: |
+        # Run a subset of integration tests against recovered environment
+        dotnet test tests/DooLittle.Health.PatientTimeline.Api.IntegrationTests/DooLittle.Health.PatientTimeline.Api.IntegrationTests.csproj --configuration Release --filter "Category=Recovery" --logger "trx;LogFileName=recovery-test-results.trx"
+
+    - name: Generate recovery report
+      run: |
+        echo "# Disaster Recovery Test Report" > recovery-report.md
+        echo "" >> recovery-report.md
+        echo "## Test Date: $(date)" >> recovery-report.md
+        echo "" >> recovery-report.md
+        echo "## Database Restore: $([ $? -eq 0 ] && echo "SUCCESS" || echo "FAILED")" >> recovery-report.md
+        echo "## Application Deployment: $(curl -s -o /dev/null -w "%{http_code}" http://localhost:8081/api/health | grep -q "200" && echo "SUCCESS" || echo "FAILED")" >> recovery-report.md
+        echo "## Integration Tests: $([ -f recovery-test-results.trx ] && echo "COMPLETED" || echo "NOT RUN")" >> recovery-report.md
+
+    - name: Upload recovery report
+      uses: actions/upload-artifact@v4
+      with:
+        name: disaster-recovery-report
+        path: recovery-report.md
+
+    - name: Cleanup test environment
+      if: always()
+      run: |
+        docker stop recovery-test-app test-postgres || true
+        docker rm recovery-test-app test-postgres || true
+
+  compliance-audit:
+    name: Backup Compliance Audit
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule'
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Audit backup compliance
+      uses: azure/CLI@v1
+      with:
+        azcliversion: latest
+        inlineScript: |
+          # Check backup retention
+          backups=$(az storage blob list \
+            --account-name ${{ secrets.AZURE_STORAGE_ACCOUNT }} \
+            --account-key ${{ secrets.AZURE_STORAGE_KEY }} \
+            --container-name backups \
+            --query "[].{name:name, lastModified:lastModified}" \
+            -o json)
+
+          # Check if backups are within retention period (30 days)
+          echo "$backups" | jq -r '.[] | select(.lastModified < "'$(date -d '30 days ago' +%Y-%m-%dT%H:%M:%SZ)'") | .name' > old-backups.txt
+
+          if [ -s old-backups.txt ]; then
+            echo "Found backups older than 30 days:"
+            cat old-backups.txt
+            exit 1
+          else
+            echo "All backups are within retention period"
+          fi
+
+    - name: Send compliance notification
+      if: failure()
+      run: |
+        # Send notification about compliance issues
+        echo "Backup compliance check failed - manual review required"

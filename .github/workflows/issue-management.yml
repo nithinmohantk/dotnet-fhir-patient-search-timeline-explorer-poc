@@ -1,0 +1,207 @@
+name: Issue Management
+
+on:
+  issues:
+    types: [opened, labeled, unlabeled, closed, reopened]
+  pull_request_target:
+    types: [opened, closed, labeled, unlabeled]
+  schedule:
+    # Run daily at 9 AM UTC
+    - cron: '0 9 * * *'
+  workflow_dispatch:
+
+jobs:
+  triage-issues:
+    name: Triage Issues
+    runs-on: ubuntu-latest
+    if: github.event_name == 'issues' && github.event.action == 'opened'
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Add triage labels
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const issue = context.payload.issue;
+          const labels = [];
+
+          // Add priority based on issue content
+          if (issue.title.toLowerCase().includes('bug') || issue.title.toLowerCase().includes('error')) {
+            labels.push('bug');
+            labels.push('priority-high');
+          } else if (issue.title.toLowerCase().includes('feature') || issue.title.toLowerCase().includes('enhancement')) {
+            labels.push('enhancement');
+            labels.push('priority-medium');
+          } else {
+            labels.push('question');
+            labels.push('priority-low');
+          }
+
+          // Add size estimation
+          const body = issue.body || '';
+          if (body.length < 100) {
+            labels.push('size-small');
+          } else if (body.length < 500) {
+            labels.push('size-medium');
+          } else {
+            labels.push('size-large');
+          }
+
+          github.rest.issues.addLabels({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            labels: labels
+          });
+
+  manage-stale:
+    name: Manage Stale Issues and PRs
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Manage stale issues
+      uses: actions/stale@v9
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        stale-issue-message: |
+          This issue has been automatically marked as stale because it has not had recent activity. It will be closed in 7 days if no further activity occurs.
+
+          If this issue is still relevant, please add a comment or update the issue.
+        stale-pr-message: |
+          This pull request has been automatically marked as stale because it has not had recent activity. It will be closed in 7 days if no further activity occurs.
+
+          If this PR is still relevant, please add a comment or update the PR.
+        close-issue-message: |
+          This issue has been automatically closed due to inactivity.
+        close-pr-message: |
+          This pull request has been automatically closed due to inactivity.
+        days-before-stale: 30
+        days-before-close: 7
+        exempt-issue-labels: 'pinned,security,bug'
+        exempt-pr-labels: 'pinned,work-in-progress'
+
+  update-project:
+    name: Update Project Board
+    runs-on: ubuntu-latest
+    if: github.event_name == 'issues' || github.event_name == 'pull_request_target'
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Update project board
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const { data: projects } = await github.rest.projects.listForRepo({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+          });
+
+          if (projects.length === 0) return;
+
+          const project = projects[0]; // Use first project
+
+          // Get project columns
+          const { data: columns } = await github.rest.projects.listColumns({
+            project_id: project.id,
+          });
+
+          const todoColumn = columns.find(col => col.name.toLowerCase().includes('todo') || col.name.toLowerCase().includes('backlog'));
+          const inProgressColumn = columns.find(col => col.name.toLowerCase().includes('in progress') || col.name.toLowerCase().includes('doing'));
+          const doneColumn = columns.find(col => col.name.toLowerCase().includes('done') || col.name.toLowerCase().includes('completed'));
+
+          if (context.eventName === 'issues') {
+            const issue = context.payload.issue;
+
+            if (issue.state === 'open') {
+              // Move to "To Do" if not already there
+              if (todoColumn) {
+                await github.rest.projects.createCard({
+                  column_id: todoColumn.id,
+                  content_id: issue.id,
+                  content_type: 'Issue',
+                });
+              }
+            } else if (issue.state === 'closed') {
+              // Move to "Done" if not already there
+              if (doneColumn) {
+                await github.rest.projects.createCard({
+                  column_id: doneColumn.id,
+                  content_id: issue.id,
+                  content_type: 'Issue',
+                });
+              }
+            }
+          }
+
+          if (context.eventName === 'pull_request_target') {
+            const pr = context.payload.pull_request;
+
+            if (pr.state === 'open') {
+              // Move to "In Progress" if not already there
+              if (inProgressColumn) {
+                await github.rest.projects.createCard({
+                  column_id: inProgressColumn.id,
+                  content_id: pr.id,
+                  content_type: 'PullRequest',
+                });
+              }
+            } else if (pr.state === 'closed' && pr.merged) {
+              // Move to "Done" if merged
+              if (doneColumn) {
+                await github.rest.projects.createCard({
+                  column_id: doneColumn.id,
+                  content_id: pr.id,
+                  content_type: 'PullRequest',
+                });
+              }
+            }
+          }
+
+  generate-reports:
+    name: Generate Project Reports
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Generate issue metrics
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const { data: issues } = await github.rest.issues.listForRepo({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            state: 'all',
+            per_page: 100,
+          });
+
+          const metrics = {
+            total_issues: issues.length,
+            open_issues: issues.filter(i => i.state === 'open').length,
+            closed_issues: issues.filter(i => i.state === 'closed').length,
+            bugs: issues.filter(i => i.labels.some(l => l.name === 'bug')).length,
+            enhancements: issues.filter(i => i.labels.some(l => l.name === 'enhancement')).length,
+            questions: issues.filter(i => i.labels.some(l => l.name === 'question')).length,
+          };
+
+          console.log('Project Metrics:', JSON.stringify(metrics, null, 2));
+
+          // Create or update metrics file
+          const fs = require('fs');
+          fs.writeFileSync('project-metrics.json', JSON.stringify(metrics, null, 2));
+
+    - name: Upload metrics
+      uses: actions/upload-artifact@v4
+      with:
+        name: project-metrics
+        path: project-metrics.json

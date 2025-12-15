@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: doolittle-health
+  labels:
+    name: doolittle-health
+    environment: production

@@ -1,0 +1,166 @@
+name: Security & Compliance
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    # Run daily at 6 AM UTC
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+jobs:
+  security-scan:
+    name: Security Vulnerability Scan
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Run Trivy filesystem scan
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'fs'
+        scan-ref: '.'
+        format: 'sarif'
+        output: 'trivy-fs-results.sarif'
+        severity: 'CRITICAL,HIGH'
+
+    - name: Run Trivy config scan
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'config'
+        scan-ref: '.'
+        format: 'sarif'
+        output: 'trivy-config-results.sarif'
+
+    - name: Run Snyk security scan
+      uses: snyk/actions/dotnet@master
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      with:
+        args: --severity-threshold=high --fail-on=upgradable
+
+    - name: Run Snyk for Node.js
+      working-directory: src/DooLittle.Health.PatientTimeline.Web
+      run: |
+        npm install -g snyk
+        snyk test --severity-threshold=high --fail-on=upgradable
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+    - name: Upload Trivy results to GitHub Security tab
+      uses: github/codeql-action/upload-sarif@v3
+      if: always()
+      with:
+        sarif_file: 'trivy-fs-results.sarif'
+
+    - name: Upload config scan results
+      uses: github/codeql-action/upload-sarif@v3
+      if: always()
+      with:
+        sarif_file: 'trivy-config-results.sarif'
+
+  compliance-check:
+    name: Compliance & License Check
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+
+    - name: Check licenses
+      run: |
+        dotnet tool install -g dotnet-project-licenses
+        dotnet-project-licenses --input . --output-format json --output licenses.json
+
+    - name: Check for banned licenses
+      run: |
+        # Check for GPL, LGPL, or other incompatible licenses
+        jq -r '.[] | select(.LicenseType | contains("GPL") or contains("LGPL")) | .PackageName' licenses.json > banned-licenses.txt
+        if [ -s banned-licenses.txt ]; then
+          echo "Found packages with banned licenses:"
+          cat banned-licenses.txt
+          exit 1
+        fi
+
+    - name: Check for outdated packages
+      run: |
+        dotnet list package --outdated --include-transitive > outdated-packages.txt
+        if [ -s outdated-packages.txt ]; then
+          echo "Found outdated packages:"
+          cat outdated-packages.txt
+        fi
+
+    - name: Run FOSSA license scan
+      uses: fossa-contrib/fossa-action@v1
+      with:
+        api-key: ${{ secrets.FOSSA_API_KEY }}
+
+    - name: Upload license report
+      uses: actions/upload-artifact@v4
+      with:
+        name: license-report
+        path: licenses.json
+
+  secrets-scan:
+    name: Secrets Detection
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Run TruffleHog secrets scan
+      uses: trufflesecurity/trufflehog@main
+      with:
+        path: ./
+        base: main
+        head: HEAD
+        extra_args: --debug --only-verified
+
+    - name: Run GitLeaks
+      uses: gitleaks/gitleaks-action@v2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITLEAKS_LICENSE: ${{ secrets.GITLEAKS_LICENSE }}
+
+  container-security:
+    name: Container Security Scan
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Build Docker image
+      run: docker build -t patient-timeline:test .
+
+    - name: Run Trivy container scan
+      uses: aquasecurity/trivy-action@master
+      with:
+        scan-type: 'image'
+        scan-ref: 'patient-timeline:test'
+        format: 'sarif'
+        output: 'trivy-container-results.sarif'
+        severity: 'CRITICAL,HIGH'
+
+    - name: Upload container scan results
+      uses: github/codeql-action/upload-sarif@v3
+      if: always()
+      with:
+        sarif_file: 'trivy-container-results.sarif'
+
+    - name: Clean up
+      run: docker rmi patient-timeline:test

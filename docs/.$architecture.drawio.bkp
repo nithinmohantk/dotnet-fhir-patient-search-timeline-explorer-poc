@@ -1,0 +1,662 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/29.0.3 Chrome/140.0.7339.249 Electron/38.7.0 Safari/537.36" version="29.0.3" pages="11">
+  <diagram id="C4-Context" name="C4 Context Diagram">
+    <mxGraphModel dx="1000" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="person1" value="Healthcare&#xa;Provider&#xa;[Uses the system to view patient timelines]" style="shape=c4Person;html=1;labelPosition=center;verticalLabelPosition=bottom;align=center;verticalAlign=top;fillColor=#e3f2fd;strokeColor=#1976d2;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="50" y="200" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="person2" value="Patient&#xa;[Views own medical history]" style="shape=c4Person;html=1;labelPosition=center;verticalLabelPosition=bottom;align=center;verticalAlign=top;fillColor=#e3f2fd;strokeColor=#1976d2;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="50" y="350" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="system1" value="Patient Timeline&#xa;System&#xa;[Provides timeline views of patient medical data]" style="shape=c4SoftwareSystem;html=1;labelPosition=center;verticalLabelPosition=bottom;align=center;verticalAlign=top;fillColor=#e8f5e8;strokeColor=#388e3c;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="300" y="250" width="200" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="system2" value="FHIR Data&#xa;Sources&#xa;[Stores patient FHIR bundles]" style="shape=c4SoftwareSystem;html=1;labelPosition=center;verticalLabelPosition=bottom;align=center;verticalAlign=top;fillColor=#fff3e0;strokeColor=#f57c00;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="600" y="200" width="160" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="system3" value="Synthea Data&#xa;Generator&#xa;[Generates synthetic patient data]" style="shape=c4SoftwareSystem;html=1;labelPosition=center;verticalLabelPosition=bottom;align=center;verticalAlign=top;fillColor=#fff3e0;strokeColor=#f57c00;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="600" y="350" width="160" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="edge1" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.3;" parent="1" source="person1" target="system1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="170" y="240" as="sourcePoint" />
+            <mxPoint x="300" y="240" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge1_label" value="Views patient timelines" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="edge1" vertex="1" connectable="0">
+          <mxGeometry x="-0.2" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge2" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.7;" parent="1" source="person2" target="system1" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="170" y="390" as="sourcePoint" />
+            <mxPoint x="300" y="370" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge2_label" value="Views own medical history" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="edge2" vertex="1" connectable="0">
+          <mxGeometry x="-0.2" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge3" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" parent="1" source="system1" target="system2" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="500" y="310" as="sourcePoint" />
+            <mxPoint x="600" y="250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge3_label" value="Retrieves FHIR bundles" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="edge3" vertex="1" connectable="0">
+          <mxGeometry x="0.5" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge4" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" parent="1" source="system3" target="system2" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="760" y="400" as="sourcePoint" />
+            <mxPoint x="680" y="300" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge4_label" value="Generates synthetic data" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="edge4" vertex="1" connectable="0">
+          <mxGeometry x="-0.5" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="C4-Container" name="C4 Container Diagram">
+    <mxGraphModel dx="989" dy="730" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="boundary" value="Patient Timeline System" style="shape=c4SystemBoundary;html=1;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;strokeColor=#388e3c;strokeWidth=2;fontSize=14;" parent="1" vertex="1">
+          <mxGeometry x="189" y="70" width="450" height="400" as="geometry" />
+        </mxCell>
+        <mxCell id="container1" value="React Web App&#xa;[SPA, TypeScript, Vite]" style="shape=c4Container;html=1;labelPosition=center;verticalLabelPosition=bottom;align=center;verticalAlign=top;fillColor=#fff3e0;strokeColor=#f57c00;fontSize=12;" parent="boundary" vertex="1">
+          <mxGeometry x="50" y="50" width="150" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="container2" value="ASP.NET Core API&#xa;[Web API, .NET 10, C#]" style="shape=c4Container;html=1;labelPosition=center;verticalLabelPosition=bottom;align=center;verticalAlign=top;fillColor=#e8f5e8;strokeColor=#388e3c;fontSize=12;" parent="boundary" vertex="1">
+          <mxGeometry x="50" y="200" width="150" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="container3" value="PostgreSQL&#xa;[Relational Database]" style="shape=c4Database;html=1;labelPosition=center;verticalLabelPosition=bottom;align=center;verticalAlign=top;fillColor=#fce4ec;strokeColor=#e91e63;fontSize=12;" parent="boundary" vertex="1">
+          <mxGeometry x="250" y="200" width="150" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="person1" value="Healthcare&#xa;Provider" style="shape=c4Person;html=1;labelPosition=center;verticalLabelPosition=bottom;align=center;verticalAlign=top;fillColor=#e3f2fd;strokeColor=#1976d2;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="50" y="200" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="person2" value="Patient" style="shape=c4Person;html=1;labelPosition=center;verticalLabelPosition=bottom;align=center;verticalAlign=top;fillColor=#e3f2fd;strokeColor=#1976d2;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="50" y="350" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="system1" value="FHIR Data&#xa;Sources" style="shape=c4SoftwareSystem;html=1;labelPosition=center;verticalLabelPosition=bottom;align=center;verticalAlign=top;fillColor=#fff3e0;strokeColor=#f57c00;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="680" y="250" width="160" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="edge1" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="person1" target="container1" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge1_label" value="Uses" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;" parent="edge1" vertex="1" connectable="0">
+          <mxGeometry x="0.5" y="-1" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge2" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="person2" target="container1" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge2_label" value="Uses" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;" parent="edge2" vertex="1" connectable="0">
+          <mxGeometry x="0.5" y="1" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge3" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="container1" target="container2" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge3_label" value="HTTP" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;" parent="edge3" vertex="1" connectable="0">
+          <mxGeometry x="0.5" y="-1" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge4" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="container2" target="container3" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge4_label" value="EF Core" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;" parent="edge4" vertex="1" connectable="0">
+          <mxGeometry x="0.5" y="-1" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge5" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="container2" target="system1" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge5_label" value="Reads FHIR files" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;" parent="edge5" vertex="1" connectable="0">
+          <mxGeometry x="0.5" y="-1" relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="C4-Component-API" name="C4 Component Diagram - API">
+    <mxGraphModel dx="1000" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="boundary" value="ASP.NET Core API" style="shape=c4ContainerBoundary;html=1;labelPosition=center;verticalLabelPosition=top;align=center;verticalAlign=bottom;strokeColor=#388e3c;strokeWidth=2;fontSize=14;" parent="1" vertex="1">
+          <mxGeometry x="100" y="100" width="600" height="400" as="geometry" />
+        </mxCell>
+        <mxCell id="component1" value="PatientsController&#xa;[Controller, ASP.NET Core]" style="shape=c4Component;html=1;labelPosition=center;verticalLabelPosition=bottom;align=center;verticalAlign=top;fillColor=#e8f5e8;strokeColor=#388e3c;fontSize=12;" parent="boundary" vertex="1">
+          <mxGeometry x="50" y="50" width="150" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="component2" value="DataImportService&#xa;[Service, C#]" style="shape=c4Component;html=1;labelPosition=center;verticalLabelPosition=bottom;align=center;verticalAlign=top;fillColor=#fff3e0;strokeColor=#f57c00;fontSize=12;" parent="boundary" vertex="1">
+          <mxGeometry x="250" y="50" width="150" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="component3" value="UnitOfWork&#xa;[Repository Pattern]" style="shape=c4Component;html=1;labelPosition=center;verticalLabelPosition=bottom;align=center;verticalAlign=top;fillColor=#fce4ec;strokeColor=#e91e63;fontSize=12;" parent="boundary" vertex="1">
+          <mxGeometry x="250" y="150" width="150" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="component4" value="PatientTimelineContext&#xa;[EF Core Context]" style="shape=c4Component;html=1;labelPosition=center;verticalLabelPosition=bottom;align=center;verticalAlign=top;fillColor=#fce4ec;strokeColor=#e91e63;fontSize=12;" parent="boundary" vertex="1">
+          <mxGeometry x="250" y="250" width="150" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="component5" value="FileSystemService&#xa;[Service, FHIR Files]" style="shape=c4Component;html=1;labelPosition=center;verticalLabelPosition=bottom;align=center;verticalAlign=top;fillColor=#fff3e0;strokeColor=#f57c00;fontSize=12;" parent="boundary" vertex="1">
+          <mxGeometry x="450" y="150" width="150" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="edge1" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="component1" target="component2" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge1_label" value="Uses" style="edgeLabel;html=1;" parent="edge1" vertex="1" connectable="0">
+          <mxGeometry x="0.5" y="-1" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge2" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="component2" target="component3" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge2_label" value="Uses" style="edgeLabel;html=1;" parent="edge2" vertex="1" connectable="0">
+          <mxGeometry x="0.5" y="-1" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge3" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="component3" target="component4" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge3_label" value="Uses" style="edgeLabel;html=1;" parent="edge3" vertex="1" connectable="0">
+          <mxGeometry x="0.5" y="-1" relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge4" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="component1" target="component5" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge4_label" value="Reads FHIR" style="edgeLabel;html=1;" parent="edge4" vertex="1" connectable="0">
+          <mxGeometry x="0.5" y="-1" relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="C4-Component-Web" name="C4 Component Diagram - Web">
+    <mxGraphModel dx="1000" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="boundary" value="React Web App" style="shape=c4ContainerBoundary;whiteSpace=wrap;html=1;strokeWidth=2;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="50" y="50" width="700" height="500" as="geometry" />
+        </mxCell>
+        <mxCell id="patientselector" value="PatientSelector&#xa;[React Component, MUI Autocomplete]&#xa;TypeScript, React" style="shape=c4Component;whiteSpace=wrap;html=1;fillColor=#fff3e0;fontSize=12;" parent="boundary" vertex="1">
+          <mxGeometry x="100" y="100" width="150" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="timelineview" value="TimelineView&#xa;[React Component, Timeline Display]&#xa;TypeScript, React" style="shape=c4Component;whiteSpace=wrap;html=1;fillColor=#fff3e0;fontSize=12;" parent="boundary" vertex="1">
+          <mxGeometry x="300" y="100" width="150" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="apiclient" value="ApiClient&#xa;[Service, HTTP Client]&#xa;Axios, TypeScript" style="shape=c4Component;whiteSpace=wrap;html=1;fillColor=#fff3e0;fontSize=12;" parent="boundary" vertex="1">
+          <mxGeometry x="100" y="250" width="150" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="patientstore" value="PatientStore&#xa;[State Management, React Context]&#xa;React Hooks" style="shape=c4Component;whiteSpace=wrap;html=1;fillColor=#fff3e0;fontSize=12;" parent="boundary" vertex="1">
+          <mxGeometry x="300" y="250" width="150" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="edge1" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="patientselector" target="patientstore" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge2" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="timelineview" target="patientstore" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge3" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="apiclient" target="patientstore" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge4" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="patientstore" target="apiclient" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="Process-Flow" name="Process Flow Diagram">
+    <mxGraphModel dx="1000" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="start" value="Start" style="shape=ellipse;whiteSpace=wrap;html=1;fillColor=#e3f2fd;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="350" y="50" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="process1" value="User selects patient&#xa;from dropdown" style="shape=process;whiteSpace=wrap;html=1;fillColor=#e3f2fd;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="325" y="120" width="130" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="process2" value="Frontend calls&#xa;/api/patients/{id}/timeline" style="shape=process;whiteSpace=wrap;html=1;fillColor=#fff3e0;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="325" y="200" width="130" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="process3" value="API queries database&#xa;for patient data" style="shape=process;whiteSpace=wrap;html=1;fillColor=#e8f5e8;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="325" y="280" width="130" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="process4" value="API loads FHIR bundle&#xa;from file system" style="shape=process;whiteSpace=wrap;html=1;fillColor=#e8f5e8;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="325" y="360" width="130" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="process5" value="Frontend parses and&#xa;renders timeline events" style="shape=process;whiteSpace=wrap;html=1;fillColor=#fff3e0;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="325" y="440" width="130" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="end" value="End" style="shape=ellipse;whiteSpace=wrap;html=1;fillColor=#e3f2fd;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="350" y="520" width="80" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="edge1" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="start" target="process1" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge2" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="process1" target="process2" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge3" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="process2" target="process3" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge4" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="process3" target="process4" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge5" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="process4" target="process5" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge6" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="process5" target="end" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="HLD" name="High Level Design (HLD)">
+    <mxGraphModel dx="1000" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="presentation" value="Presentation Layer&#xa;(User Interface)" style="shape=swimlane;whiteSpace=wrap;html=1;fillColor=#fff3e0;strokeColor=#f57c00;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="100" y="50" width="600" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="webapp" value="React Web App&#xa;[SPA, TypeScript, Material-UI]&#xa;Docker Container (Port 3000)" style="shape=process;whiteSpace=wrap;html=1;fillColor=#fff3e0;fontSize=12;" parent="presentation" vertex="1">
+          <mxGeometry x="50" y="40" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="browser" value="User Browser&#xa;[Chrome, Firefox, Safari]" style="shape=process;whiteSpace=wrap;html=1;fillColor=#e3f2fd;fontSize=12;" parent="presentation" vertex="1">
+          <mxGeometry x="350" y="40" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="application" value="Application Layer&#xa;(Business Logic)" style="shape=swimlane;whiteSpace=wrap;html=1;fillColor=#e8f5e8;strokeColor=#388e3c;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="100" y="250" width="600" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="api" value="ASP.NET Core API&#xa;[.NET 10, Web API, EF Core]&#xa;Docker Container (Port 8080)" style="shape=process;whiteSpace=wrap;html=1;fillColor=#e8f5e8;fontSize=12;" parent="application" vertex="1">
+          <mxGeometry x="50" y="40" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="services" value="Business Services&#xa;[PatientService, TimelineService]" style="shape=process;whiteSpace=wrap;html=1;fillColor=#e8f5e8;fontSize=12;" parent="application" vertex="1">
+          <mxGeometry x="350" y="40" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="data" value="Data Layer&#xa;(Data Storage &amp; Access)" style="shape=swimlane;whiteSpace=wrap;html=1;fillColor=#fce4ec;strokeColor=#e91e63;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="100" y="450" width="600" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="postgres" value="PostgreSQL Database&#xa;[Relational DB, Patient metadata]&#xa;Docker Container (Port 5432)" style="shape=process;whiteSpace=wrap;html=1;fillColor=#fce4ec;fontSize=12;" parent="data" vertex="1">
+          <mxGeometry x="50" y="40" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="fhir" value="FHIR File Storage&#xa;[JSON bundles, Timeline data]&#xa;File System" style="shape=process;whiteSpace=wrap;html=1;fillColor=#fce4ec;fontSize=12;" parent="data" vertex="1">
+          <mxGeometry x="350" y="40" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="edge1" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" source="webapp" target="api" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge1_label" value="HTTP API Calls&#xa;(REST/JSON)" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="edge1" vertex="1" connectable="0">
+          <mxGeometry x="0.5" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge2" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" source="api" target="postgres" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge2_label" value="Database Queries&#xa;(EF Core)" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="edge2" vertex="1" connectable="0">
+          <mxGeometry x="0.5" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge3" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" source="api" target="fhir" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge3_label" value="File Access&#xa;(JSON FHIR)" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="edge3" vertex="1" connectable="0">
+          <mxGeometry x="0.5" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge4" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" source="browser" target="webapp" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge4_label" value="HTTP Requests" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="edge4" vertex="1" connectable="0">
+          <mxGeometry x="0.5" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="LLD" name="Low Level Design (LLD)">
+    <mxGraphModel dx="1000" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="classes" value="Class Diagrams" style="swimlane;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="50" y="50" width="350" height="400" as="geometry" />
+        </mxCell>
+        <mxCell id="patient" value="Patient&#xa;+ Id: string&#xa;+ SyntheaId: string&#xa;+ FirstName: string&#xa;+ LastName: string&#xa;+ BirthDate: DateTime&#xa;+ Gender: string&#xa;+ TimelineEvents: List&lt;TimelineEvent&gt;" style="shape=umlClass;whiteSpace=wrap;html=1;fillColor=#e8f5e8;fontSize=12;" parent="classes" vertex="1">
+          <mxGeometry x="50" y="50" width="250" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="timelineevent" value="TimelineEvent&#xa;+ Id: int&#xa;+ PatientId: string&#xa;+ EventType: string&#xa;+ Description: string&#xa;+ Date: DateTime&#xa;+ Code: string&#xa;+ Display: string" style="shape=umlClass;whiteSpace=wrap;html=1;fillColor=#fff3e0;fontSize=12;" parent="classes" vertex="1">
+          <mxGeometry x="50" y="200" width="250" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="controller" value="PatientsController&#xa;+ GetPatients(): IActionResult&#xa;+ GetTimeline(string syntheaId): IActionResult&#xa;- _patientService: IPatientService" style="shape=umlClass;whiteSpace=wrap;html=1;fillColor=#fce4ec;fontSize=12;" parent="classes" vertex="1">
+          <mxGeometry x="50" y="350" width="250" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="db" value="Database Schema" style="swimlane;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="450" y="50" width="350" height="250" as="geometry" />
+        </mxCell>
+        <mxCell id="patients_table" value="Patients&#xa;PK Id (string)&#xa;SyntheaId (string)&#xa;FirstName (string)&#xa;LastName (string)&#xa;BirthDate (datetime)&#xa;Gender (string)" style="shape=table;whiteSpace=wrap;html=1;fillColor=#fce4ec;fontSize=12;" parent="db" vertex="1">
+          <mxGeometry x="50" y="50" width="250" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="timeline_table" value="TimelineEvents&#xa;PK Id (int)&#xa;FK PatientId (string)&#xa;EventType (string)&#xa;Description (string)&#xa;Date (datetime)&#xa;Code (string)&#xa;Display (string)" style="shape=table;whiteSpace=wrap;html=1;fillColor=#fce4ec;fontSize=12;" parent="db" vertex="1">
+          <mxGeometry x="50" y="150" width="250" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="api" value="API Endpoints" style="swimlane;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="450" y="350" width="350" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="endpoint1" value="GET /api/patients&#xa;Returns: List&lt;Patient&gt;&#xa;Status: 200 OK" style="shape=process;whiteSpace=wrap;html=1;fillColor=#e8f5e8;fontSize=12;" parent="api" vertex="1">
+          <mxGeometry x="50" y="50" width="250" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="endpoint2" value="GET /api/patients/by-synthea/{id}/timeline&#xa;Returns: List&lt;TimelineEvent&gt;&#xa;Status: 200 OK" style="shape=process;whiteSpace=wrap;html=1;fillColor=#e8f5e8;fontSize=12;" parent="api" vertex="1">
+          <mxGeometry x="50" y="120" width="250" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="edge1" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="patient" target="timelineevent" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge1_label" value="1..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="edge1" vertex="1" connectable="0">
+          <mxGeometry x="0.5" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge2" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="controller" target="patient" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge2_label" value="uses" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="edge2" vertex="1" connectable="0">
+          <mxGeometry x="0.5" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge3" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="patients_table" target="timeline_table" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge3_label" value="1..*" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="edge3" vertex="1" connectable="0">
+          <mxGeometry x="0.5" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="Interaction" name="Interaction Diagram">
+    <mxGraphModel dx="1000" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="user" value="User" style="shape=sequence;whiteSpace=wrap;html=1;fillColor=#e3f2fd;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="50" y="50" width="80" height="500" as="geometry" />
+        </mxCell>
+        <mxCell id="web" value="Web App" style="shape=sequence;whiteSpace=wrap;html=1;fillColor=#fff3e0;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="200" y="50" width="80" height="500" as="geometry" />
+        </mxCell>
+        <mxCell id="api" value="API" style="shape=sequence;whiteSpace=wrap;html=1;fillColor=#e8f5e8;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="350" y="50" width="80" height="500" as="geometry" />
+        </mxCell>
+        <mxCell id="db" value="Database" style="shape=sequence;whiteSpace=wrap;html=1;fillColor=#fce4ec;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="500" y="50" width="80" height="500" as="geometry" />
+        </mxCell>
+        <mxCell id="msg1" value="Load page" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="user" target="web" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="msg2" value="GET /api/patients" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="web" target="api" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="msg3" value="Query patients" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="api" target="db" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="msg4" value="Return patient list" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="db" target="api" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="msg5" value="Return patients JSON" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="api" target="web" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="msg6" value="Select patient" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="user" target="web" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="msg7" value="GET /api/patients/{id}/timeline" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="web" target="api" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="msg8" value="Query patient data" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="api" target="db" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="msg9" value="Return patient data" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="db" target="api" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="msg10" value="Load FHIR bundle" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="api" target="api" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="msg11" value="Return timeline JSON" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="api" target="web" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="msg12" value="Render timeline" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="web" target="web" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="Activity" name="Activity Diagram">
+    <mxGraphModel dx="1000" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="start" value="" style="shape=ellipse;whiteSpace=wrap;html=1;fillColor=#e3f2fd;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="350" y="50" width="40" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="loadpage" value="Load Patient Timeline Page" style="shape=process;whiteSpace=wrap;html=1;fillColor=#fff3e0;fontSize=12;rounded=1;" parent="1" vertex="1">
+          <mxGeometry x="320" y="120" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="loadpatients" value="Load Patient List&#xa;from API" style="shape=process;whiteSpace=wrap;html=1;fillColor=#e8f5e8;fontSize=12;rounded=1;" parent="1" vertex="1">
+          <mxGeometry x="320" y="200" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="selectpatient" value="User Selects Patient&#xa;from Dropdown" style="shape=process;whiteSpace=wrap;html=1;fillColor=#e3f2fd;fontSize=12;rounded=1;" parent="1" vertex="1">
+          <mxGeometry x="320" y="280" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="fetchtimeline" value="Fetch Timeline Data&#xa;from API" style="shape=process;whiteSpace=wrap;html=1;fillColor=#e8f5e8;fontSize=12;rounded=1;" parent="1" vertex="1">
+          <mxGeometry x="320" y="360" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="parsefhir" value="Parse FHIR Bundle&#xa;and Extract Events" style="shape=process;whiteSpace=wrap;html=1;fillColor=#fff3e0;fontSize=12;rounded=1;" parent="1" vertex="1">
+          <mxGeometry x="320" y="440" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="rendertimeline" value="Render Timeline Events&#xa;in UI" style="shape=process;whiteSpace=wrap;html=1;fillColor=#fff3e0;fontSize=12;rounded=1;" parent="1" vertex="1">
+          <mxGeometry x="320" y="520" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="end" value="" style="shape=ellipse;whiteSpace=wrap;html=1;fillColor=#e3f2fd;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="350" y="600" width="40" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="decision" value="API Error?" style="shape=rhombus;whiteSpace=wrap;html=1;fillColor=#fce4ec;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="335" y="480" width="70" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="error" value="Display Error Message" style="shape=process;whiteSpace=wrap;html=1;fillColor=#fce4ec;fontSize=12;rounded=1;" parent="1" vertex="1">
+          <mxGeometry x="500" y="485" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="edge1" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="start" target="loadpage" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge2" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="loadpage" target="loadpatients" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge3" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="loadpatients" target="selectpatient" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge4" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="selectpatient" target="fetchtimeline" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge5" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="fetchtimeline" target="parsefhir" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge6" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="parsefhir" target="decision" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge7" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" parent="1" source="decision" target="error" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge7_label" value="Yes" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="edge7" vertex="1" connectable="0">
+          <mxGeometry x="0.5" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge8" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" source="decision" target="rendertimeline" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge8_label" value="No" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="edge8" vertex="1" connectable="0">
+          <mxGeometry x="0.5" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge9" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="rendertimeline" target="end" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge10" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="error" target="end" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="Deployment" name="Deployment Diagram">
+    <mxGraphModel dx="1000" dy="1000" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="dockerhost" value="Docker Host" style="shape=deployment;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="50" y="50" width="700" height="600" as="geometry" />
+        </mxCell>
+        <mxCell id="webcontainer" value="React Web App&#xa;Container&#xa;Port: 3000" style="shape=deployment;whiteSpace=wrap;html=1;fillColor=#fff3e0;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="150" y="150" width="150" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="apicontainer" value="ASP.NET Core API&#xa;Container&#xa;Port: 8080" style="shape=deployment;whiteSpace=wrap;html=1;fillColor=#e8f5e8;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="350" y="150" width="150" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="dbcontainer" value="PostgreSQL&#xa;Container&#xa;Port: 5432" style="shape=deployment;whiteSpace=wrap;html=1;fillColor=#fce4ec;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="550" y="150" width="150" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="volumes" value="Volumes&#xa;(Data Persistence)" style="shape=deployment;whiteSpace=wrap;html=1;fillColor=#fce4ec;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="150" y="300" width="150" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="networks" value="Docker Networks&#xa;(patient-timeline-net)" style="shape=deployment;whiteSpace=wrap;html=1;fillColor=#e3f2fd;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="350" y="300" width="200" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="user" value="User Browser" style="shape=deployment;whiteSpace=wrap;html=1;fillColor=#e3f2fd;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="350" y="450" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="edge1" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" source="webcontainer" target="apicontainer" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge2" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" source="apicontainer" target="dbcontainer" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge3" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" source="dbcontainer" target="volumes" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge4" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" source="webcontainer" target="networks" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge5" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" source="apicontainer" target="networks" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge6" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" parent="1" source="dbcontainer" target="networks" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge7" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.5;exitY=0;entryX=0.5;entryY=1;" parent="1" source="user" target="webcontainer" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="Network" name="Network Diagram">
+    <mxGraphModel dx="989" dy="730" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="user" value="User Browser&#xa;(localhost)" style="shape=network;whiteSpace=wrap;html=1;fillColor=#e3f2fd;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="50" y="200" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="internet" value="Internet" style="shape=network;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="200" y="200" width="100" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="dockerhost" value="Docker Host" style="shape=network;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="350" y="150" width="170" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="web" value="Web Container&#xa;Port 3000" style="shape=network;whiteSpace=wrap;html=1;fillColor=#fff3e0;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="400" y="200" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="api" value="API Container&#xa;Port 8080" style="shape=network;whiteSpace=wrap;html=1;fillColor=#e8f5e8;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="400" y="280" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="db" value="PostgreSQL&#xa;Port 5432" style="shape=network;whiteSpace=wrap;html=1;fillColor=#fce4ec;fontSize=12;" parent="1" vertex="1">
+          <mxGeometry x="550" y="240" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="edge1" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="user" target="internet" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge1_label" value="HTTP" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="edge1" vertex="1" connectable="0">
+          <mxGeometry x="0.5" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge2" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="internet" target="dockerhost" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge2_label" value="Internet" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="edge2" vertex="1" connectable="0">
+          <mxGeometry x="0.5" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge3" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;" parent="1" source="dockerhost" target="web" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge3_label" value="Port 3000" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="edge3" vertex="1" connectable="0">
+          <mxGeometry x="0.5" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge4" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;" parent="1" source="dockerhost" target="api" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge4_label" value="Port 8080" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="edge4" vertex="1" connectable="0">
+          <mxGeometry x="0.5" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge5" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0;exitY=0.5;entryX=1;entryY=0.5;" parent="1" source="dockerhost" target="db" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="340" y="260" />
+              <mxPoint x="340" y="140" />
+              <mxPoint x="650" y="140" />
+              <mxPoint x="650" y="270" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge5_label" value="Port 5432" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="edge5" vertex="1" connectable="0">
+          <mxGeometry x="0.5" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge6" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="web" target="api" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge6_label" value="Internal API" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="edge6" vertex="1" connectable="0">
+          <mxGeometry x="0.5" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="edge7" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="api" target="db" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="edge7_label" value="Database" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="edge7" vertex="1" connectable="0">
+          <mxGeometry x="0.5" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

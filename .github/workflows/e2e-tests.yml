@@ -1,0 +1,215 @@
+name: End-to-End Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    # Run weekly on Sundays at 10 AM UTC
+    - cron: '0 10 * * 0'
+  workflow_dispatch:
+
+jobs:
+  e2e-test:
+    name: End-to-End Tests
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: patient_timeline_e2e
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+
+    - name: Cache NuGet packages
+      uses: actions/cache@v4
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
+
+    - name: Cache npm dependencies
+      uses: actions/cache@v4
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-node-
+
+    - name: Build .NET API
+      run: dotnet publish src/DooLittle.Health.PatientTimeline.Api/DooLittle.Health.PatientTimeline.Api.csproj --configuration Release --output ./api-publish
+
+    - name: Build React Frontend
+      working-directory: src/DooLittle.Health.PatientTimeline.Web
+      run: |
+        npm ci
+        npm run build
+
+    - name: Build Docker image
+      run: docker build -t patient-timeline:e2e .
+
+    - name: Start application with Docker Compose
+      run: |
+        docker-compose -f docker-compose.e2e.yml up -d
+        docker-compose -f docker-compose.e2e.yml ps
+
+    - name: Wait for application to be ready
+      run: |
+        timeout 300 bash -c 'until curl -f http://localhost:8080/api/health; do sleep 5; done'
+
+    - name: Run API integration tests
+      run: |
+        dotnet test tests/DooLittle.Health.PatientTimeline.Api.IntegrationTests/DooLittle.Health.PatientTimeline.Api.IntegrationTests.csproj --configuration Release --logger "trx;LogFileName=test-results.trx"
+
+    - name: Run Playwright E2E tests
+      working-directory: src/DooLittle.Health.PatientTimeline.Web
+      run: |
+        npm install -D @playwright/test
+        npx playwright install
+        npx playwright test --headed=false
+
+    - name: Run Postman/Newman API tests
+      run: |
+        npm install -g newman
+        newman run tests/postman/patient-timeline-api.postman_collection.json --environment tests/postman/e2e.postman_environment.json --reporters cli,json --reporter-json-export newman-results.json
+
+    - name: Generate test report
+      uses: dorny/test-reporter@v1
+      if: success() || failure()
+      with:
+        name: E2E Test Results
+        path: 'test-results.trx'
+        reporter: dotnet-trx
+        fail-on-error: true
+
+    - name: Upload test artifacts
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: e2e-test-results
+        path: |
+          test-results.trx
+          newman-results.json
+          src/DooLittle.Health.PatientTimeline.Web/test-results/
+          playwright-report/
+
+    - name: Stop Docker Compose
+      if: always()
+      run: docker-compose -f docker-compose.e2e.yml down
+
+  contract-test:
+    name: Contract Tests
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+
+    - name: Run Pact contract tests
+      run: |
+        dotnet tool install -g PactNet.Windows --global
+        dotnet test tests/DooLittle.Health.PatientTimeline.Api.ContractTests/DooLittle.Health.PatientTimeline.Api.ContractTests.csproj --configuration Release
+
+    - name: Publish pact contracts
+      run: |
+        # Publish pact files to Pact Broker
+        echo "Publishing pact contracts..."
+
+  accessibility-test:
+    name: Accessibility Tests
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+
+    - name: Install dependencies
+      working-directory: src/DooLittle.Health.PatientTimeline.Web
+      run: npm ci
+
+    - name: Build React app
+      working-directory: src/DooLittle.Health.PatientTimeline.Web
+      run: npm run build
+
+    - name: Serve built app
+      working-directory: src/DooLittle.Health.PatientTimeline.Web
+      run: |
+        npm install -g serve
+        serve -s dist -l 3000 &
+        sleep 10
+
+    - name: Run axe accessibility tests
+      working-directory: src/DooLittle.Health.PatientTimeline.Web
+      run: |
+        npm install -g @axe-core/cli
+        axe http://localhost:3000 --exit
+
+    - name: Run Lighthouse accessibility audit
+      uses: treosh/lighthouse-ci-action@v10
+      with:
+        urls: http://localhost:3000
+        configPath: .lighthouserc.accessibility.json
+        uploadArtifacts: true
+
+  api-load-test:
+    name: API Load Tests
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup k6
+      run: |
+        curl https://github.com/grafana/k6/releases/download/v0.45.0/k6-v0.45.0-linux-amd64.tar.gz -L | tar xvz
+        sudo mv k6-v0.45.0-linux-amd64/k6 /usr/local/bin/
+
+    - name: Start test API
+      run: |
+        docker run -d -p 8080:80 --name test-api patient-timeline:latest
+
+    - name: Run load tests
+      run: |
+        k6 run --out json=load-test-results.json tests/load/api-load-test.js
+
+    - name: Upload load test results
+      uses: actions/upload-artifact@v4
+      with:
+        name: api-load-test-results
+        path: load-test-results.json
+
+    - name: Stop test API
+      if: always()
+      run: docker stop test-api

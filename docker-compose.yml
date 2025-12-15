@@ -1,0 +1,73 @@
+# DooLittle Health Patient Timeline - Docker Compose
+# Author: Nithin Mohan T K (Example project for experimentation)
+
+services:
+  # Database
+  patient-timeline-db:
+    image: postgres:15-alpine
+    container_name: patient-timeline-db
+    environment:
+      POSTGRES_DB: PatientTimelineDb
+      POSTGRES_USER: patientuser
+      POSTGRES_PASSWORD: patientpass123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - patient-timeline-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U patientuser -d PatientTimelineDb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # API Backend
+  patient-timeline-api:
+    build:
+      context: .
+      dockerfile: deployments/docker/Dockerfile.api
+    container_name: patient-timeline-api
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:8080
+      ConnectionStrings__DefaultConnection: "Host=patient-timeline-db;Database=PatientTimelineDb;Username=patientuser;Password=patientpass123"
+    ports:
+      - "8080:8080"
+    depends_on:
+      patient-timeline-db:
+        condition: service_healthy
+    networks:
+      patient-timeline-network:
+        aliases:
+          - api
+    volumes:
+      - ./data:/app/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Web Frontend
+  patient-timeline-web:
+    build:
+      context: .
+      dockerfile: deployments/docker/Dockerfile.web
+    container_name: patient-timeline-web
+    environment:
+      REACT_APP_API_BASE_URL: http://localhost:8080
+    ports:
+      - "3000:80"
+    depends_on:
+      - patient-timeline-api
+    networks:
+      - patient-timeline-network
+
+volumes:
+  postgres_data:
+
+networks:
+  patient-timeline-network:
+    driver: bridge

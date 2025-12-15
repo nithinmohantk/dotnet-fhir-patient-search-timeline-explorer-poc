@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: patient-timeline-web
+  namespace: doolittle-health
+  labels:
+    app: patient-timeline-web
+    component: web
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: patient-timeline-web
+  template:
+    metadata:
+      labels:
+        app: patient-timeline-web
+        component: web
+    spec:
+      containers:
+      - name: web
+        image: doolittlehealth/patient-timeline-web:latest
+        ports:
+        - containerPort: 80
+          name: http
+        env:
+        - name: REACT_APP_API_BASE_URL
+          value: "http://patient-timeline-api-service.doolittle-health.svc.cluster.local"
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+          limits:
+            memory: "256Mi"
+            cpu: "200m"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 5
