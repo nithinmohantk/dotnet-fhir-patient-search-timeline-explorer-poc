@@ -81,7 +81,7 @@ jobs:
         npx webpack-bundle-analyzer dist/static/js/*.js --mode static --report dist/bundle-report.html
 
     - name: Upload performance results
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: performance-results
         path: |
@@ -127,7 +127,7 @@ jobs:
         k6 run --out json=load-test-results.json tests/load/load-test.js
 
     - name: Upload load test results
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v6
       with:
         name: load-test-results
         path: load-test-results.json
