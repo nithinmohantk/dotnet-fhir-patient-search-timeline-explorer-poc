@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import { Container, Typography, Box, AppBar, Toolbar, Avatar } from '@mui/material';
+import { Container, Typography, Box, AppBar, Toolbar, Avatar, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
+import TimelineIcon from '@mui/icons-material/Timeline';
+import ExploreIcon from '@mui/icons-material/Explore';
 import PatientSelector from './components/PatientSelector';
 import PatientTimeline from './components/PatientTimeline';
+import PatientExplorer from './components/PatientExplorer';
 import { getPatients, getPatientTimeline } from './api';
 import type { Patient, FHIRTimelineData } from './types';
 
@@ -89,6 +92,7 @@ function App() {
   const [timelineData, setTimelineData] = useState<FHIRTimelineData | null>(null);
   const [loading, setLoading] = useState(true);
   const [timelineLoading, setTimelineLoading] = useState(false);
+  const [mode, setMode] = useState<'timeline' | 'explorer'>('timeline');
 
   useEffect(() => {
     const fetchPatients = async () => {
@@ -133,7 +137,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-          <Typography variant="h6">Loading Patient Timeline Explorer...</Typography>
+          <Typography variant="h6">Loading DooLittle Health...</Typography>
         </Box>
       </ThemeProvider>
     );
@@ -152,7 +156,7 @@ function App() {
               DooLittle Health
             </Typography>
             <Typography variant="caption" sx={{ color: 'text.secondary', lineHeight: 1 }}>
-              Patient Timeline Explorer
+              {mode === 'timeline' ? 'Patient Timeline Explorer' : 'Patient Explorer'}
             </Typography>
           </Box>
         </Toolbar>
@@ -161,11 +165,33 @@ function App() {
       <Container maxWidth="xl" sx={{ py: 4 }}>
         <Box sx={{ mb: 4 }}>
           <Typography variant="h4" component="h1" gutterBottom sx={{ mb: 1 }}>
-            Patient Timeline Explorer
+            {mode === 'timeline' ? 'Patient Timeline Explorer' : 'Patient Explorer'}
           </Typography>
-          <Typography variant="body1" color="text.secondary">
-            Select a patient to explore their comprehensive healthcare timeline powered by FHIR data.
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
+            {mode === 'timeline'
+              ? 'Select a patient to explore their comprehensive healthcare timeline powered by FHIR data.'
+              : 'Select a patient to explore their healthcare data organized by category.'
+            }
           </Typography>
+
+          {/* Mode Selector */}
+          <Box sx={{ mb: 3 }}>
+            <ToggleButtonGroup
+              value={mode}
+              exclusive
+              onChange={(_, newMode) => newMode && setMode(newMode)}
+              aria-label="view mode"
+            >
+              <ToggleButton value="timeline" aria-label="timeline view">
+                <TimelineIcon sx={{ mr: 1 }} />
+                Timeline View
+              </ToggleButton>
+              <ToggleButton value="explorer" aria-label="explorer view">
+                <ExploreIcon sx={{ mr: 1 }} />
+                Explorer View
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </Box>
         </Box>
 
         <Box sx={{ p: 4, backgroundColor: 'background.paper', borderRadius: 3, mb: 3 }}>
@@ -181,18 +207,24 @@ function App() {
             {timelineLoading ? (
               <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
                 <Typography variant="h6" color="text.secondary">
-                  Loading patient timeline...
+                  Loading patient data...
                 </Typography>
               </Box>
             ) : (timelineData || selectedPatient) ? (
-              <PatientTimeline
-                timelineData={timelineData}
-                patientData={selectedPatient}
-              />
+              mode === 'timeline' ? (
+                <PatientTimeline
+                  timelineData={timelineData}
+                  patientData={selectedPatient}
+                />
+              ) : (
+                <PatientExplorer
+                  timelineData={timelineData}
+                />
+              )
             ) : (
               <Box sx={{ textAlign: 'center', py: 4 }}>
                 <Typography variant="h6" color="text.secondary" gutterBottom>
-                  Unable to load timeline data
+                  Unable to load patient data
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                   The FHIR data for this patient could not be retrieved. Please try selecting another patient.
@@ -209,7 +241,7 @@ function App() {
               Select a Patient
             </Typography>
             <Typography variant="body1" color="text.secondary">
-              Choose a patient from the dropdown above to view their comprehensive healthcare timeline.
+              Choose a patient from the dropdown above to explore their healthcare data.
             </Typography>
           </Box>
         )}

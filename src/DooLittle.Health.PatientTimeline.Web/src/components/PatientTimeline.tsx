@@ -424,7 +424,7 @@ const renderImmunizationDetails = (resource: any) => (
 const PatientTimeline: React.FC<PatientTimelineProps> = ({ timelineData, patientData }) => {
   const [selectedEvent, setSelectedEvent] = useState<TimelineEvent | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState(3);
+  const [activeTab, setActiveTab] = useState(4);
 
   if (!timelineData && !patientData) {
     return (
