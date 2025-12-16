@@ -2,7 +2,22 @@
 
 A full-stack web application for visualizing patient medical timelines built with enterprise-grade architecture.
 
-## About
+---
+## DooLittle Health – Company Overview
+DooLittle Health is a **fictional** innovative healthcare technology company based in Ireland, dedicated to improving the efficiency and quality of care for providers and patients. The organization specializes in Provider and Patient Support Systems, offering integrated solutions that streamline clinical workflows and enhance patient engagement.
+### Core Offerings
+- **Electronic Health Records (EHR):** Comprehensive, secure, and interoperable EHR systems designed to meet international standards.
+- **HL7 Integration:** Robust support for HL7 protocols, ensuring seamless data exchange between healthcare systems and stakeholders.
+- **Provider Support Tools:** Advanced platforms for scheduling, billing, and clinical decision support to optimize provider operations.
+- **Patient Engagement Solutions:** Tools for appointment management, health tracking, and secure communication to empower patients in their care journey.
+
+#### Mission
+To deliver cutting-edge healthcare technology that bridges gaps between providers and patients, ensuring better outcomes, compliance, and interoperability across the Irish healthcare ecosystem.
+#### Vision
+A future where healthcare delivery is connected, patient-centric, and data-driven, leveraging global standards like HL7 and FHIR for maximum interoperability.
+---
+
+## About the PROJECT
 
 This is an example project built by **Nithin Mohan T K** out of curiosity and fun, experimenting with modern web development technologies and cloud infrastructure. It demonstrates enterprise-grade architecture patterns while serving as a learning and experimentation platform.
 
