@@ -4,7 +4,7 @@ A full-stack web application for visualizing patient medical timelines built wit
 
 ---
 ## DooLittle Health – Company Overview
-DooLittle Health is an innovative healthcare technology company based in Ireland, dedicated to improving the efficiency and quality of care for providers and patients. The organization specializes in Provider and Patient Support Systems, offering integrated solutions that streamline clinical workflows and enhance patient engagement.
+DooLittle Health is a **fictional** innovative healthcare technology company based in Ireland, dedicated to improving the efficiency and quality of care for providers and patients. The organization specializes in Provider and Patient Support Systems, offering integrated solutions that streamline clinical workflows and enhance patient engagement.
 ### Core Offerings
 - **Electronic Health Records (EHR):** Comprehensive, secure, and interoperable EHR systems designed to meet international standards.
 - **HL7 Integration:** Robust support for HL7 protocols, ensuring seamless data exchange between healthcare systems and stakeholders.
