@@ -95,7 +95,7 @@ jobs:
         newman run tests/postman/patient-timeline-api.postman_collection.json --environment tests/postman/e2e.postman_environment.json --reporters cli,json --reporter-json-export newman-results.json
 
     - name: Generate test report
-      uses: dorny/test-reporter@v1
+      uses: dorny/test-reporter@v2
       if: success() || failure()
       with:
         name: E2E Test Results
