@@ -22,7 +22,7 @@ jobs:
       uses: actions/checkout@v6
 
     - name: Setup .NET
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v5
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
@@ -105,7 +105,7 @@ jobs:
       uses: docker/setup-buildx-action@v3
 
     - name: Build API Docker image
-      uses: docker/build-push-action@v5
+      uses: docker/build-push-action@v6
       with:
         context: .
         file: ./deployments/docker/Dockerfile.api
@@ -115,7 +115,7 @@ jobs:
         cache-to: type=gha,mode=max
 
     - name: Build Web Docker image
-      uses: docker/build-push-action@v5
+      uses: docker/build-push-action@v6
       with:
         context: .
         file: ./deployments/docker/Dockerfile.web
@@ -157,7 +157,7 @@ jobs:
       uses: actions/checkout@v6
 
     - name: Setup .NET
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v5
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
